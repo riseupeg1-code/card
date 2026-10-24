@@ -1,0 +1,2158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>يوسف ♡ ملك — حكايتنا</title>
+<meta name="description" content="حكاية يوسف وملك: بصمتين، وذكريات، وجواب، وأغنية.">
+<meta name="theme-color" content="#F8DDE5">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&family=Tajawal:wght@300;400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   1. TOKENS
+   ============================================================ */
+:root{
+  --blush:#F8DDE5;
+  --rose:#EAB7CC;
+  --lav:#DCCEF0;
+  --powder:#C5E4FA;
+  --sky:#A5D9FA;
+  --burgundy:#A62C48;
+  --navy:#173F63;
+
+  --paper:#FFF9F6;
+  --ink:#3B2432;
+  --ink-soft:#6E4F5F;
+
+  --font-display:'Baloo Bhaijaan 2', system-ui, -apple-system, sans-serif;
+  --font-body:'Tajawal','IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
+
+  --shadow-paper: 0 22px 46px -30px rgba(23,63,99,.55);
+  --shadow-lift: 0 34px 60px -34px rgba(23,63,99,.6);
+
+  --tint: rgba(255,255,255,0);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{
+  background:var(--paper);
+  -webkit-text-size-adjust:100%;
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:var(--font-body);
+  font-weight:400;
+  font-size:clamp(15px, 1.05vw + 12px, 17px);
+  line-height:1.85;
+  color:var(--ink);
+  background:transparent;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body.is-locked{ overflow:hidden; height:100dvh; }
+
+img{ max-width:100%; display:block; }
+button{ font-family:inherit; }
+
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+:where(a,button,input,[tabindex]):focus-visible{
+  outline:2.5px solid var(--burgundy);
+  outline-offset:4px;
+  border-radius:6px;
+}
+.skip-link{
+  position:fixed; inset-inline-start:50%; top:-100px; transform:translateX(50%);
+  z-index:200; background:var(--paper); color:var(--burgundy);
+  padding:.7rem 1.3rem; border-radius:0 0 14px 14px;
+  font-weight:700; text-decoration:none; box-shadow:var(--shadow-paper);
+  transition:top .25s ease;
+}
+.skip-link:focus{ top:0; }
+
+/* ============================================================
+   2. THE SHARED WORLD BACKGROUND
+   ============================================================ */
+.world{
+  position:fixed; inset:0; z-index:0;
+  overflow:hidden; pointer-events:none;
+}
+.world__grad{
+  position:absolute; inset:-18%;
+  background:
+    radial-gradient(58% 48% at 16% 10%,  #F8DDE5 0%, rgba(248,221,229,0) 64%),
+    radial-gradient(52% 44% at 86% 16%,  #C5E4FA 0%, rgba(197,228,250,0) 66%),
+    radial-gradient(68% 58% at 80% 84%,  #DCCEF0 0%, rgba(220,206,240,0) 68%),
+    radial-gradient(58% 52% at 10% 90%,  #EAB7CC 0%, rgba(234,183,204,0) 66%),
+    radial-gradient(44% 38% at 50% 46%,  #FFF9F6 0%, rgba(255,249,246,0) 70%),
+    linear-gradient(158deg, #FFF9F6 0%, #F6E7F1 34%, #E6EEFB 68%, #FFF9F6 100%);
+  animation:drift 36s ease-in-out infinite alternate;
+  will-change:transform;
+}
+@keyframes drift{
+  from{ transform:translate3d(-1.6%, -1.2%, 0) scale(1.02); }
+  to  { transform:translate3d( 1.6%,  1.6%, 0) scale(1.07); }
+}
+.world__tint{
+  position:absolute; inset:0;
+  background-color:var(--tint);
+  transition:background-color 1.8s ease;
+  mix-blend-mode:multiply;
+  opacity:.55;
+}
+.world__grain{
+  position:absolute; inset:0; opacity:.045;
+  mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   3. AMBIENT FLOATING HEARTS
+   ============================================================ */
+.hearts-layer{
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:1;
+  overflow:hidden;
+}
+.amb-heart{
+  position:absolute;
+  bottom:-70px;
+  width:var(--size, 14px);
+  height:var(--size, 14px);
+  color:var(--hue, #A62C48);
+  opacity:var(--op, .25);
+  animation:floatUp linear infinite;
+  will-change:transform, opacity;
+}
+.amb-heart svg{ width:100%; height:100%; display:block; }
+@keyframes floatUp{
+  0%   { transform:translate3d(0,0,0) rotate(-6deg) scale(.55); opacity:0; }
+  12%  { opacity:var(--op, .25); }
+  88%  { opacity:var(--op, .25); }
+  100% { transform:translate3d(var(--drift, 20px), -112vh, 0) rotate(340deg) scale(1.05); opacity:0; }
+}
+
+/* ============================================================
+   4. OPENING EXPERIENCE
+   ============================================================ */
+.opening{
+  position:fixed; inset:0; z-index:60;
+  display:flex; align-items:center; justify-content:center;
+  min-height:100vh; min-height:100dvh;
+  padding:clamp(18px, 4vw, 44px);
+  overflow-y:auto;
+  transition:opacity 1s cubic-bezier(.4,0,.2,1),
+             transform 1.2s cubic-bezier(.4,0,.2,1),
+             visibility 0s linear 1s;
+}
+.opening.is-gone{
+  opacity:0;
+  transform:scale(1.045);
+  visibility:hidden;
+  pointer-events:none;
+}
+
+.opening__inner{
+  width:min(760px, 100%);
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:clamp(1rem, 3vw, 1.7rem);
+}
+
+.opening__kicker{
+  margin:0;
+  font-family:var(--font-body);
+  font-size:clamp(.72rem, 2.6vw, .85rem);
+  font-weight:500;
+  letter-spacing:.22em;
+  color:var(--ink-soft);
+  opacity:.85;
+}
+
+.names{
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:clamp(2.7rem, 11.5vw, 5.4rem);
+  line-height:1.1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.22em;
+  white-space:nowrap;
+  filter:drop-shadow(0 10px 26px rgba(255,255,255,.55));
+}
+.names .n--y{
+  color:var(--navy);
+  text-shadow:0 2px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 0 30px rgba(197,228,250,.9);
+}
+.names .n--m{
+  color:var(--burgundy);
+  text-shadow:0 2px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 0 30px rgba(248,221,229,.9);
+}
+.names__heart{
+  width:clamp(26px, 6vw, 44px);
+  height:auto;
+  flex:none;
+  animation:beat 2.8s ease-in-out infinite;
+  transform-origin:center;
+}
+@keyframes beat{
+  0%, 100%{ transform:scale(1); }
+  14%{ transform:scale(1.16); }
+  28%{ transform:scale(1); }
+  42%{ transform:scale(1.09); }
+  56%{ transform:scale(1); }
+}
+
+.opening__msg{
+  margin:0;
+  max-width:32ch;
+  font-size:clamp(.92rem, 3.4vw, 1.08rem);
+  line-height:1.85;
+  color:var(--ink-soft);
+  font-weight:400;
+}
+
+/* ---- Half-heart fingerprint row ---- */
+.fp-row{
+  position:relative;
+  width:100%;
+  max-width:min(460px, 100%);
+  margin-top:clamp(.6rem, 2vw, 1.4rem);
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  gap:clamp(18px, 7vw, 46px);
+  min-height:clamp(150px, 38vw, 220px);
+}
+
+.fp{
+  appearance:none;
+  border:0;
+  background:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.5rem;
+  cursor:pointer;
+  color:var(--ink-c, var(--burgundy));
+  -webkit-tap-highlight-color:transparent;
+  position:relative;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.fp[data-who="youssef"]{ --ink-c:var(--navy); --glow:rgba(23,63,99,.55); }
+.fp[data-who="malak"]{ --ink-c:var(--burgundy); --glow:rgba(166,44,72,.55); }
+.fp:hover{ transform:translateY(-3px); }
+.fp:active{ transform:scale(.965); }
+
+.fp__stage{
+  position:relative;
+  display:inline-block;
+  line-height:0;
+}
+
+.fp__half-wrap{
+  position:relative;
+  display:inline-block;
+  line-height:0;
+  will-change:transform;
+}
+
+.fp__half{
+  display:block;
+  height:clamp(120px, 33vw, 190px);
+  width:auto;
+  filter:drop-shadow(0 14px 24px rgba(23,63,99,.25));
+  transition:filter .4s ease, opacity .5s ease;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.fp:hover .fp__half{ filter:drop-shadow(0 18px 30px rgba(23,63,99,.32)); }
+.fp.is-on .fp__half{ filter:drop-shadow(0 18px 34px var(--glow)); }
+
+/* SVG fallback (visible if the PNG fails to load) */
+.fp__fallback{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  color:var(--ink-c);
+  opacity:.28;
+  z-index:0;
+  pointer-events:none;
+  display:block;
+}
+
+.fp__glow{
+  position:absolute;
+  inset:-30%;
+  border-radius:50%;
+  background:radial-gradient(circle, var(--glow) 0%, transparent 62%);
+  opacity:0;
+  pointer-events:none;
+  z-index:-1;
+  transform:scale(.4);
+}
+.fp.is-on .fp__glow{ animation:glowPulse 1s cubic-bezier(.2,.7,.3,1); }
+@keyframes glowPulse{
+  0%{ opacity:0; transform:scale(.4); }
+  40%{ opacity:.85; transform:scale(1.15); }
+  100%{ opacity:0; transform:scale(1.5); }
+}
+
+.fp__badge{
+  position:absolute;
+  top:-4px; inset-inline-end:-6px;
+  width:34px; height:34px;
+  border-radius:50%;
+  background:var(--paper);
+  display:grid; place-items:center;
+  box-shadow:0 0 0 2px rgba(255,255,255,.9), 0 8px 16px -8px rgba(23,63,99,.6);
+  opacity:0;
+  transform:scale(.4) rotate(-14deg);
+  transition:opacity .4s ease, transform .5s cubic-bezier(.2,1.5,.4,1);
+  z-index:2;
+}
+.fp.is-on .fp__badge{ opacity:1; transform:scale(1) rotate(0deg); }
+.fp__badge svg{ width:17px; height:17px; }
+
+.fp__name{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:clamp(1rem, 3.6vw, 1.18rem);
+  color:var(--ink-c);
+  letter-spacing:.01em;
+  line-height:1.3;
+  text-shadow:0 1px 0 #fff;
+}
+
+/* ---- Connector heart that draws when both pressed ---- */
+.fp-bridge{
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  overflow:visible;
+}
+.fp-bridge svg{ width:100%; height:100%; overflow:visible; display:block; }
+.bridge-heart{
+  fill:none;
+  stroke:url(#bridgeGrad);
+  stroke-width:2.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray:1200;
+  stroke-dashoffset:1200;
+  opacity:0;
+  transition:stroke-dashoffset 1.3s cubic-bezier(.45,0,.2,1), opacity .5s ease;
+}
+.opening.is-connected .bridge-heart{
+  opacity:.78;
+  stroke-dashoffset:0;
+}
+
+/* ---- Ribbon seal ---- */
+.ribbon-seal{
+  position:absolute; inset:-16% -8%;
+  z-index:3;
+  pointer-events:none;
+}
+.ribbon-seal svg{ width:100%; height:100%; overflow:visible; display:block; }
+.ribbon__line{
+  fill:none;
+  stroke:var(--burgundy);
+  stroke-width:2.4;
+  stroke-linecap:round;
+  stroke-dasharray:760;
+  stroke-dashoffset:0;
+  opacity:.72;
+  transition:stroke-dashoffset 1.25s cubic-bezier(.6,0,.3,1), opacity .7s ease .25s;
+}
+.ribbon__line--ghost{
+  stroke:var(--navy);
+  stroke-width:1.3;
+  opacity:.34;
+  transition:stroke-dashoffset 1.25s cubic-bezier(.6,0,.3,1) .06s, opacity .7s ease .3s;
+}
+.opening.is-untying .ribbon__line{ stroke-dashoffset:-760; opacity:0; }
+.opening.is-untying .ribbon__line--ghost{ stroke-dashoffset:-760; opacity:0; }
+.ribbon__bow{
+  position:absolute; top:50%; left:50%;
+  width:clamp(64px, 18vw, 92px);
+  height:auto;
+  transform:translate(-50%,-50%);
+  transform-origin:center;
+  transition:transform .8s cubic-bezier(.5,-0.2,.4,1.4), opacity .6s ease;
+  color:var(--burgundy);
+}
+.opening.is-untying .ribbon__bow{
+  transform:translate(-50%,-50%) rotate(-32deg) scale(.3);
+  opacity:0;
+}
+
+/* ---- Burst hearts ---- */
+.burst-heart{
+  position:absolute;
+  width:var(--size, 16px);
+  height:var(--size, 16px);
+  color:var(--color, #A62C48);
+  pointer-events: none;
+  z-index: 12;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(.2);
+  animation: burstFly 1.4s cubic-bezier(.15,.7,.3,1) forwards;
+  animation-delay: var(--delay, 0s);
+}
+.burst-heart svg{ width:100%; height:100%; display:block; }
+@keyframes burstFly{
+  0%  { transform: translate(-50%, -50%) scale(.2) rotate(0deg); opacity: 0; }
+  15% { opacity: 1; }
+  65% { opacity: 1; }
+  100%{ transform: translate(calc(-50% + var(--tx, 0px)), calc(-50% + var(--ty, 0px))) scale(1) rotate(400deg); opacity: 0; }
+}
+
+.opening__status{
+  margin:0;
+  min-height:1.6em;
+  font-size:clamp(.85rem, 3vw, .98rem);
+  font-weight:500;
+  color:var(--ink-soft);
+  transition:color .3s ease;
+}
+.opening__status.is-good{ color:var(--burgundy); font-weight:700; }
+
+.opening__hint{
+  margin:0;
+  font-size:.78rem;
+  color:var(--ink-soft);
+  opacity:.62;
+}
+
+/* ============================================================
+   5. STORY SHELL
+   ============================================================ */
+#story{
+  position:relative;
+  z-index:1;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 1.1s ease;
+}
+body.unlocked #story{ opacity:1; visibility:visible; }
+
+/* ============================================================
+   6. INTRO HERO — the "wow" screen after the unlock
+   ============================================================ */
+.intro{
+  position:relative;
+  min-height:100vh;
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:clamp(4rem, 12vw, 7rem) clamp(1.1rem, 6vw, 3rem) clamp(3rem, 9vw, 5rem);
+  overflow:hidden;
+}
+
+.intro__deco{
+  position:absolute;
+  pointer-events:none;
+  color:var(--burgundy);
+  opacity:.22;
+}
+.intro__deco--tl{ top:8%; left:6%; width:clamp(70px, 14vw, 120px); transform:rotate(-14deg); }
+.intro__deco--br{ bottom:12%; right:6%; width:clamp(70px, 14vw, 120px); transform:rotate(172deg); color:var(--navy); }
+.intro__deco--tr{ top:14%; right:12%; width:clamp(50px, 10vw, 84px); transform:rotate(24deg); opacity:.16; }
+
+/* heart-outline frame drawn on unlock */
+.intro__frame{
+  position:relative;
+  width:min(340px, 78vw);
+  aspect-ratio:1 / 1.05;
+  margin-bottom:clamp(1rem, 3vw, 2rem);
+  display:grid;
+  place-items:center;
+  color:var(--burgundy);
+}
+.intro__heart-outline{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  overflow:visible;
+}
+.intro__heart-outline path{
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray:1600;
+  stroke-dashoffset:1600;
+  opacity:.42;
+}
+body.unlocked .intro__heart-outline path{
+  animation:drawHeart 2.4s cubic-bezier(.4,.1,.4,1) .35s forwards;
+}
+@keyframes drawHeart{ to{ stroke-dashoffset:0; } }
+
+.intro__names-inner{
+  position:relative;
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:clamp(1.55rem, 6.6vw, 2.35rem);
+  color:var(--navy);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.25em;
+  line-height:1;
+  white-space:nowrap;
+  z-index:2;
+  filter:drop-shadow(0 4px 12px rgba(255,255,255,.7));
+}
+.intro__names-inner .m{ color:var(--burgundy); }
+.intro__names-inner svg{
+  width:.65em; height:.65em;
+  flex:none;
+  animation:beat 2.4s ease-in-out infinite;
+}
+
+.intro__content{
+  position:relative;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.55rem;
+}
+
+.eyebrow{
+  margin:0 0 .35rem;
+  font-size:.76rem;
+  font-weight:700;
+  letter-spacing:.24em;
+  color:var(--burgundy);
+  opacity:.85;
+}
+
+.intro__title{
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:clamp(1.9rem, 8.4vw, 3.6rem);
+  line-height:1.24;
+  margin:.3rem 0 .6rem;
+  color:var(--navy);
+  text-shadow:0 2px 0 rgba(255,255,255,.8), 0 8px 30px rgba(255,255,255,.6);
+}
+.intro__title em{
+  font-style:normal;
+  color:var(--burgundy);
+  position:relative;
+  display:inline-block;
+}
+.intro__title em::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:.06em;
+  height:.18em;
+  border-radius:99px;
+  background:linear-gradient(to right, transparent, rgba(166,44,72,.18), transparent);
+  z-index:-1;
+}
+
+.intro__lead{
+  margin:0;
+  max-width:42ch;
+  color:var(--ink-soft);
+  font-size:clamp(.95rem, 3.4vw, 1.08rem);
+  line-height:1.9;
+}
+.intro__hint{
+  margin:.4rem 0 0;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(.85rem, 3.2vw, .96rem);
+  color:var(--burgundy);
+  opacity:.9;
+  letter-spacing:.03em;
+}
+
+/* staggered entrance on unlock */
+[data-intro-step]{ opacity:0; }
+body.unlocked [data-intro-step="0"]{ animation:introFadeUp 1s cubic-bezier(.2,.8,.2,1) .15s forwards; }
+body.unlocked [data-intro-step="1"]{ animation:introFadeUp 1s cubic-bezier(.2,.8,.2,1) .35s forwards; }
+body.unlocked [data-intro-step="2"]{ animation:introFadeUp 1.1s cubic-bezier(.2,.8,.2,1) .55s forwards; }
+body.unlocked [data-intro-step="3"]{ animation:introFadeUp 1s cubic-bezier(.2,.8,.2,1) .85s forwards; }
+body.unlocked [data-intro-step="4"]{ animation:introFadeUp 1s cubic-bezier(.2,.8,.2,1) 1.15s forwards; }
+body.unlocked [data-intro-step="5"]{ animation:introFadeUp 1s cubic-bezier(.2,.8,.2,1) 1.5s forwards; }
+@keyframes introFadeUp{
+  from{ opacity:0; transform:translateY(26px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+.scroll-cue{
+  margin-top:clamp(2rem, 7vw, 3.2rem);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.55rem;
+  font-size:.72rem;
+  letter-spacing:.24em;
+  color:var(--ink-soft);
+  opacity:.78;
+}
+.scroll-cue span{
+  display:block;
+  width:1px; height:46px;
+  background:linear-gradient(to bottom, rgba(166,44,72,.6), rgba(166,44,72,0));
+  animation:cue 2.6s ease-in-out infinite;
+  transform-origin:top;
+}
+@keyframes cue{
+  0%,100%{ transform:scaleY(.45); opacity:.4; }
+  50%{ transform:scaleY(1); opacity:.95; }
+}
+
+/* ============================================================
+   7. SCRAPBOOK
+   ============================================================ */
+.section-title{
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:clamp(1.7rem, 6.2vw, 2.7rem);
+  line-height:1.35;
+  margin:0 0 .5em;
+  color:var(--navy);
+  text-shadow:0 1px 0 rgba(255,255,255,.7);
+}
+
+.scrapbook{
+  position:relative;
+  max-width:1080px;
+  margin:0 auto;
+  padding:clamp(2rem, 8vw, 5rem) clamp(1.1rem, 5vw, 3rem) clamp(4rem, 12vw, 8rem);
+  display:flex;
+  flex-direction:column;
+  gap:clamp(2.6rem, 8vw, 5.5rem);
+}
+
+.mem{
+  position:relative;
+  margin:0;
+  width:100%;
+  max-width:min(330px, 84vw);
+  --rot:0deg;
+}
+.mem.align-start{ align-self:flex-start; }
+.mem.align-center{ align-self:center; }
+.mem.align-end{ align-self:flex-end; }
+
+.js .mem.reveal,
+.js .doodle.reveal{
+  opacity:0;
+  transform:rotate(var(--rot)) translateY(34px) scale(.985);
+  transition:opacity .9s cubic-bezier(.2,.8,.2,1),
+             transform 1s cubic-bezier(.2,.8,.2,1);
+}
+.js .mem.reveal.in,
+.js .doodle.reveal.in{
+  opacity:1;
+  transform:rotate(var(--rot)) translateY(0) scale(1);
+}
+
+.mem__frame{
+  position:relative;
+  background:#fff;
+  padding:11px 11px 16px;
+  border-radius:7px;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 0 0 1px rgba(166,44,72,.07),
+    var(--shadow-paper);
+  transform:rotate(var(--rot));
+  transition:transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .5s ease;
+}
+.mem__frame:hover{
+  transform:rotate(0deg) translateY(-4px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 0 0 1px rgba(166,44,72,.07),
+    var(--shadow-lift);
+}
+.mem__img{
+  width:100%;
+  height:auto;
+  aspect-ratio:4/5;
+  object-fit:cover;
+  border-radius:3px;
+  background:linear-gradient(160deg, var(--blush), var(--powder));
+}
+.mem__cap{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:.35rem .6rem;
+  margin-top:.85rem;
+  padding-inline:.15rem;
+}
+.mem__date{
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.1em;
+  color:var(--burgundy);
+  opacity:.8;
+}
+.mem__text{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:1rem;
+  color:var(--ink);
+  line-height:1.5;
+}
+.mem__sticker{
+  position:absolute;
+  top:-16px; inset-inline-start:-14px;
+  width:42px; height:42px;
+  color:var(--burgundy);
+  filter:drop-shadow(0 6px 10px rgba(23,63,99,.18));
+  transform:rotate(-12deg);
+  pointer-events:none;
+  animation:stickerWiggle 6s ease-in-out infinite;
+}
+@keyframes stickerWiggle{
+  0%,100%{ transform:rotate(-12deg) scale(1); }
+  50%{ transform:rotate(-8deg) scale(1.05); }
+}
+.mem--wide{ max-width:100%; width:100%; align-self:center; }
+.mem--wide .mem__frame{ padding:12px; border-radius:20px; }
+.mem--wide .mem__img{ aspect-ratio:16/10; border-radius:12px; }
+.mem--wide .mem__cap{ justify-content:center; text-align:center; }
+
+.mem--note{
+  background:linear-gradient(175deg, #FFFDF8 0%, #FFF6F0 100%);
+  border-radius:5px;
+  padding:clamp(1.3rem, 5vw, 2rem) clamp(1.2rem, 5vw, 2rem) clamp(1.4rem, 5vw, 2.1rem);
+  box-shadow:
+    0 0 0 1px rgba(166,44,72,.1),
+    var(--shadow-paper);
+  max-width:min(430px, 86vw);
+}
+.mem--note::before{
+  content:"";
+  position:absolute;
+  top:-13px; left:50%;
+  transform:translateX(-50%) rotate(-2.5deg);
+  width:96px; height:26px;
+  background:rgba(255,255,255,.62);
+  border:1px solid rgba(166,44,72,.09);
+  border-radius:2px;
+  box-shadow:0 3px 8px rgba(23,63,99,.07);
+}
+.mem--note p{
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(1.1rem, 4.3vw, 1.42rem);
+  line-height:1.75;
+  color:var(--burgundy);
+  text-align:center;
+}
+
+.mem--duo{
+  max-width:min(640px, 100%);
+  display:flex;
+  justify-content:center;
+  gap:clamp(.6rem, 3vw, 1.2rem);
+}
+.mem--duo .mem__frame{ padding:9px 9px 12px; }
+.mem--duo .mem__frame:nth-child(1){ transform:rotate(-3deg); }
+.mem--duo .mem__frame:nth-child(2){ transform:rotate(2.5deg) translateY(16px); }
+.mem--duo .mem__frame:hover{ transform:rotate(0) translateY(-4px); }
+.mem--duo .mem__img{ aspect-ratio:3/4; }
+.mem--duo .mem__text{ font-size:.88rem; }
+
+.doodle{
+  align-self:center;
+  width:clamp(50px, 13vw, 68px);
+  height:clamp(50px, 13vw, 68px);
+  color:var(--burgundy);
+  opacity:.42;
+  transform:rotate(var(--rot, 0deg));
+}
+.doodle svg{ width:100%; height:100%; display:block; }
+
+/* ============================================================
+   8. LOVE LETTER — sealed, folded, unfolds line-by-line
+   ============================================================ */
+.letter-section{
+  position:relative;
+  max-width:760px;
+  margin:0 auto;
+  padding:clamp(3rem, 10vw, 6rem) clamp(1.1rem, 5vw, 2.5rem) clamp(4rem, 11vw, 7rem);
+  text-align:center;
+}
+.letter-wrap{
+  margin-top:clamp(1.6rem, 6vw, 2.6rem);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1.2rem;
+  perspective: 1800px;
+}
+.letter{
+  position:relative;
+  width:100%;
+  max-width:640px;
+  text-align:right;
+  max-height:230px;
+  overflow:hidden;
+  border-radius:16px;
+  background:
+    linear-gradient(178deg, #FFFDF9 0%, #FFF7F1 46%, #FEF4EE 100%);
+  box-shadow:
+    0 0 0 1px rgba(166,44,72,.1),
+    0 30px 60px -34px rgba(23,63,99,.55);
+  transform-origin:top center;
+  transform: rotateX(-6deg) scale(.985);
+  transition:
+    max-height 1.35s cubic-bezier(.25,.9,.25,1),
+    transform 1.15s cubic-bezier(.2,.8,.2,1),
+    box-shadow .6s ease;
+  will-change: max-height, transform;
+}
+.letter.is-open{
+  max-height:3000px;
+  transform: rotateX(0deg) scale(1);
+  box-shadow:
+    0 0 0 1px rgba(166,44,72,.1),
+    0 46px 80px -38px rgba(23,63,99,.55);
+}
+.letter::after{
+  content:"";
+  position:absolute;
+  inset-inline:0; bottom:0;
+  height:110px;
+  background:linear-gradient(to top, #FEF4EE 18%, rgba(254,244,238,0));
+  pointer-events:none;
+  opacity:1;
+  transition:opacity .6s ease;
+}
+.letter.is-open::after{ opacity:0; }
+
+/* the fold crease that slides down as it opens */
+.letter__crease{
+  position:absolute;
+  inset-inline:0;
+  top:230px;
+  height:1px;
+  background:linear-gradient(to left, rgba(166,44,72,0), rgba(166,44,72,.16), rgba(166,44,72,0));
+  opacity:1;
+  transition:opacity .6s ease, top 1.2s cubic-bezier(.25,.9,.25,1);
+  pointer-events:none;
+}
+.letter.is-open .letter__crease{ opacity:0; }
+
+/* the wax seal that "breaks" */
+.letter__seal{
+  position:absolute;
+  top:50%; left:50%;
+  width:76px; height:76px;
+  transform:translate(-50%, -50%) scale(1) rotate(0deg);
+  pointer-events:none;
+  z-index:4;
+  transition:transform .9s cubic-bezier(.5,-0.2,.4,1.4), opacity .7s ease;
+  filter:drop-shadow(0 10px 18px rgba(23,63,99,.35));
+}
+.letter.is-open .letter__seal{
+  transform:translate(-50%, -160%) scale(.35) rotate(-160deg);
+  opacity:0;
+}
+.letter__seal svg{ width:100%; height:100%; display:block; }
+
+/* reveal the paragraphs one-by-one */
+.letter__body{
+  position:relative;
+  z-index:2;
+  padding:clamp(1.6rem, 6vw, 2.8rem) clamp(1.3rem, 6vw, 2.6rem) clamp(1.8rem, 6vw, 2.8rem);
+  font-size:clamp(.97rem, 3.5vw, 1.06rem);
+  line-height:2.05;
+  color:var(--ink);
+}
+.letter__body > *{
+  opacity:0;
+  transform:translateY(14px);
+  transition:opacity .65s ease, transform .65s cubic-bezier(.2,.8,.2,1);
+  transition-delay:0s;
+}
+.letter.is-open .letter__body > *{
+  opacity:1;
+  transform:none;
+  transition-delay: calc(0.35s + var(--i, 0) * 0.09s);
+}
+.letter__body p{ margin:0 0 1.05em; }
+.letter__body p:last-child{ margin-bottom:0; }
+.letter__to{
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:clamp(1.35rem, 5.4vw, 1.75rem);
+  color:var(--burgundy);
+  margin-bottom:.7em !important;
+}
+.letter__sign{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:1.1rem;
+  color:var(--navy);
+  text-align:left;
+  margin-top:1.4em !important;
+}
+.letter__heart{
+  display:inline-block;
+  width:20px; height:20px;
+  vertical-align:-3px;
+  margin-inline-start:.4rem;
+  color:var(--burgundy);
+}
+
+.letter__open{
+  appearance:none;
+  border:0;
+  cursor:pointer;
+  padding:.9rem 2rem;
+  border-radius:999px;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:1rem;
+  color:var(--paper);
+  background:linear-gradient(135deg, var(--burgundy), #8C2340);
+  box-shadow:0 16px 30px -16px rgba(166,44,72,.85);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease, opacity .4s ease;
+}
+.letter__open:hover{ transform:translateY(-2px); box-shadow:0 22px 36px -16px rgba(166,44,72,.9); }
+.letter__open:active{ transform:translateY(0) scale(.97); }
+.letter__open.is-hidden{ opacity:0; pointer-events:none; }
+
+/* ============================================================
+   9. FINALE + MUSIC PLAYER
+   ============================================================ */
+.finale{
+  position:relative;
+  max-width:820px;
+  margin:0 auto;
+  padding:clamp(2.5rem, 9vw, 5rem) clamp(1.1rem, 5vw, 2.5rem) clamp(3rem, 9vw, 5rem);
+  text-align:center;
+}
+.finale__title{
+  font-family:var(--font-display);
+  font-weight:800;
+  font-size:clamp(1.65rem, 6.4vw, 2.9rem);
+  line-height:1.42;
+  margin:0 0 clamp(1.8rem, 6vw, 2.8rem);
+  color:var(--navy);
+  text-shadow:0 2px 0 rgba(255,255,255,.75);
+}
+.finale__title span{ color:var(--burgundy); }
+
+.player{
+  position:relative;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  grid-template-areas:
+    "art  meta"
+    "bars bars"
+    "seek seek"
+    "time time";
+  align-items:center;
+  gap:1rem 1.1rem;
+  padding:clamp(1.2rem, 5vw, 1.7rem);
+  border-radius:24px;
+  text-align:right;
+  background:
+    linear-gradient(158deg, rgba(255,255,255,.92), rgba(255,255,255,.62));
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.85),
+    0 34px 66px -36px rgba(23,63,99,.6);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.player__art{
+  grid-area:art;
+  width:clamp(62px, 18vw, 84px);
+  aspect-ratio:1;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(150deg, var(--blush), var(--powder) 60%, var(--lav));
+  box-shadow:0 12px 24px -14px rgba(23,63,99,.55);
+  position:relative;
+  overflow:hidden;
+}
+.player__art svg{ width:52%; height:52%; color:var(--burgundy); opacity:.85; }
+.player__meta{ grid-area:meta; min-width:0; }
+.player__title{
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:clamp(1rem, 3.8vw, 1.15rem);
+  color:var(--navy);
+  line-height:1.35;
+}
+.player__sub{
+  margin:.15rem 0 0;
+  font-size:.8rem;
+  color:var(--ink-soft);
+  opacity:.9;
+}
+.player__controls{
+  grid-area:meta;
+  justify-self:end;
+  align-self:start;
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+}
+.player__play{
+  appearance:none;
+  border:0;
+  cursor:pointer;
+  width:clamp(48px, 14vw, 56px);
+  height:clamp(48px, 14vw, 56px);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:var(--paper);
+  background:linear-gradient(140deg, var(--burgundy), #8C2340);
+  box-shadow:0 16px 30px -14px rgba(166,44,72,.9);
+  transition:transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s ease, filter .28s ease;
+  flex:none;
+}
+.player__play:hover:not(:disabled){ transform:translateY(-2px) scale(1.03); }
+.player__play:active:not(:disabled){ transform:scale(.95); }
+.player__play:disabled{ cursor:not-allowed; filter:grayscale(.75); opacity:.45; box-shadow:none; }
+.player__play svg{ width:22px; height:22px; }
+.player__play .icon-pause{ display:none; }
+.player.is-playing .player__play .icon-play{ display:none; }
+.player.is-playing .player__play .icon-pause{ display:block; }
+.player__heart{
+  width:26px; height:26px;
+  color:var(--burgundy);
+  opacity:.35;
+  transition:opacity .4s ease;
+  flex:none;
+}
+.player.is-playing .player__heart{ opacity:1; animation:beat 1.5s ease-in-out infinite; }
+.player__bars{
+  grid-area:bars;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(2px, .5vw, 3px);
+  height:52px;
+  padding-inline:2px;
+  direction:ltr;
+}
+.player__bars span{
+  flex:1 1 0;
+  min-width:2px;
+  height:var(--h, 40%);
+  border-radius:99px;
+  background:linear-gradient(to top, var(--burgundy), var(--lav) 70%, var(--sky));
+  opacity:.35;
+  transform:scaleY(.55);
+  transform-origin:center;
+  transition:opacity .4s ease;
+  animation:wave 1.25s ease-in-out infinite;
+  animation-play-state:paused;
+  animation-delay:calc(var(--i) * -.11s);
+}
+.player.is-playing .player__bars span{ opacity:.9; animation-play-state:running; }
+@keyframes wave{
+  0%,100%{ transform:scaleY(.45); }
+  50%{ transform:scaleY(1); }
+}
+.player__seek{
+  grid-area:seek;
+  appearance:none;
+  -webkit-appearance:none;
+  width:100%;
+  height:22px;
+  background:transparent;
+  cursor:pointer;
+  margin:0;
+  direction:ltr;
+}
+.player__seek::-webkit-slider-runnable-track{
+  height:6px;
+  border-radius:99px;
+  background:linear-gradient(to right, var(--burgundy) 0%, var(--burgundy) var(--p,0%), rgba(23,63,99,.14) var(--p,0%), rgba(23,63,99,.14) 100%);
+}
+.player__seek::-moz-range-track{ height:6px; border-radius:99px; background:rgba(23,63,99,.14); }
+.player__seek::-moz-range-progress{ height:6px; border-radius:99px; background:var(--burgundy); }
+.player__seek::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:16px; height:16px;
+  margin-top:-5px;
+  border-radius:50%;
+  background:var(--paper);
+  border:2.5px solid var(--burgundy);
+  box-shadow:0 3px 8px rgba(23,63,99,.35);
+  transition:transform .2s ease;
+}
+.player__seek::-moz-range-thumb{
+  width:16px; height:16px;
+  border-radius:50%;
+  background:var(--paper);
+  border:2.5px solid var(--burgundy);
+  box-shadow:0 3px 8px rgba(23,63,99,.35);
+}
+.player__seek:disabled{ cursor:not-allowed; opacity:.5; }
+.player__time{
+  grid-area:time;
+  display:flex;
+  justify-content:space-between;
+  direction:ltr;
+  font-size:.74rem;
+  font-variant-numeric:tabular-nums;
+  color:var(--ink-soft);
+  opacity:.85;
+  margin-top:-.35rem;
+}
+.player__note{
+  grid-column:1 / -1;
+  margin:0;
+  font-size:.78rem;
+  color:var(--ink-soft);
+  text-align:center;
+  opacity:.8;
+  display:none;
+}
+.player.is-empty .player__note{ display:block; }
+
+.finale__foot{
+  margin:clamp(2.2rem, 8vw, 3.4rem) 0 0;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:.92rem;
+  color:var(--ink-soft);
+  opacity:.8;
+}
+.finale__foot span{ color:var(--burgundy); }
+
+/* ============================================================
+   10. RESPONSIVE
+   ============================================================ */
+@media (max-width:560px){
+  .mem{ max-width:min(300px, 86vw); }
+  .mem--wide{ max-width:100%; }
+  .mem--note{ max-width:88vw; }
+  .mem--duo{ max-width:100%; }
+  .mem--duo .mem__img{ aspect-ratio:1/1; }
+  .player{
+    grid-template-columns:auto 1fr;
+    grid-template-areas:
+      "art  meta"
+      "bars bars"
+      "seek seek"
+      "time time";
+    gap:.9rem .9rem;
+  }
+  .player__controls{ align-self:center; }
+  .fp__half{ height:clamp(110px, 34vw, 160px); }
+  .fp-row{ gap:clamp(14px, 6vw, 32px); }
+}
+@media (min-width:900px){
+  .player{
+    grid-template-columns:auto 1fr auto;
+    grid-template-areas:
+      "art meta controls"
+      "bars bars bars"
+      "seek seek seek"
+      "time time time";
+    gap:1.1rem 1.4rem;
+  }
+  .player__controls{ grid-area:controls; align-self:center; justify-self:end; }
+  .scrapbook{ gap:clamp(4rem, 7vw, 7rem); }
+}
+
+/* ============================================================
+   11. REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+  .world__grad{ animation:none !important; }
+  .hearts-layer{ display:none; }
+  .js .mem.reveal, .js .doodle.reveal{ opacity:1 !important; transform:rotate(var(--rot)) !important; }
+  .opening.is-gone{ transform:none; }
+  .player.is-playing .player__bars span{ animation:none !important; transform:scaleY(.85); }
+  [data-intro-step]{ opacity:1 !important; }
+  .intro__heart-outline path{ stroke-dashoffset:0 !important; }
+  .letter__body > *{ opacity:1 !important; transform:none !important; }
+}
+</style>
+</head>
+<body class="is-locked">
+
+<a class="skip-link" href="#story">تخطّى إلى الحكاية</a>
+
+<!-- shared SVG defs -->
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="heartPathFull"
+      d="M0 20 C -13 9 -26 -2 -26 -12 C -26 -20.5 -18.5 -24.5 -12 -21.5 C -6 -18.5 -2 -13.5 0 -9 C 2 -13.5 6 -18.5 12 -21.5 C 18.5 -24.5 26 -20.5 26 -12 C 26 -2 13 9 0 20 Z"/>
+    <clipPath id="clipLeftHalf">
+      <rect x="-30" y="-30" width="30" height="60"/>
+    </clipPath>
+    <clipPath id="clipRightHalf">
+      <rect x="0" y="-30" width="30" height="60"/>
+    </clipPath>
+    <linearGradient id="bridgeGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#173F63"/>
+      <stop offset=".45" stop-color="#7A3E6B"/>
+      <stop offset="1" stop-color="#A62C48"/>
+    </linearGradient>
+    <linearGradient id="bowGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A62C48"/>
+      <stop offset="1" stop-color="#7A2140"/>
+    </linearGradient>
+    <linearGradient id="sealGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B83A58"/>
+      <stop offset="1" stop-color="#7A2140"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ============ THE SHARED WORLD ============ -->
+<div class="world" aria-hidden="true">
+  <div class="world__grad"></div>
+  <div class="world__tint"></div>
+  <div class="world__grain"></div>
+</div>
+
+<!-- ============ AMBIENT FLOATING HEARTS ============ -->
+<div class="hearts-layer" id="heartsLayer" aria-hidden="true"></div>
+
+<!-- ============ OPENING ============ -->
+<section class="opening" id="opening" aria-labelledby="openingTitle">
+  <div class="opening__inner">
+
+    <p class="opening__kicker">بصمتين · وحكاية واحدة</p>
+
+    <h2 class="names" id="openingTitle">
+      <span class="n n--y">يوسف</span>
+      <svg class="names__heart" viewBox="0 0 60 56" aria-hidden="true" focusable="false">
+        <path d="M30 50 C 14 37 3 27 3 16.5 C 3 8 10 3 16.5 6 C 22 8.5 27 14 30 20 C 33 14 38 8.5 43.5 6 C 50 3 57 8 57 16.5 C 57 27 46 37 30 50 Z"
+              fill="#A62C48" stroke="#fff" stroke-width="3.5" stroke-linejoin="round"/>
+      </svg>
+      <span class="n n--m">ملك</span>
+    </h2>
+
+    <p class="opening__msg">في حكايات مبتكملش غير لما الاتنين يكونوا موجودين.</p>
+
+    <div class="fp-row" id="fpRow">
+
+      <!-- connector heart behind the halves -->
+      <div class="fp-bridge" aria-hidden="true">
+        <svg viewBox="0 0 400 150" preserveAspectRatio="none" focusable="false">
+          <path class="bridge-heart"
+                d="M70 76 C 70 42 126 12 200 30 C 274 12 330 42 330 76
+                   C 330 112 262 136 200 142 C 138 136 70 112 70 76 Z"/>
+        </svg>
+      </div>
+
+      <!-- ribbon seal on top -->
+      <div class="ribbon-seal" id="ribbonSeal" aria-hidden="true">
+        <svg viewBox="0 0 400 150" preserveAspectRatio="none" focusable="false">
+          <path class="ribbon__line"
+                d="M6 78 C 70 38 132 118 200 78 C 268 38 330 118 394 78"/>
+          <path class="ribbon__line ribbon__line--ghost"
+                d="M6 88 C 70 48 132 128 200 88 C 268 48 330 128 394 88"/>
+        </svg>
+        <svg class="ribbon__bow" viewBox="0 0 100 76" focusable="false">
+          <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M50 34 C 36 18 18 14 14 26 C 10 38 28 46 50 40"/>
+            <path d="M50 34 C 64 18 82 14 86 26 C 90 38 72 46 50 40"/>
+            <path d="M50 34 C 46 48 38 58 28 62"/>
+            <path d="M50 34 C 54 48 62 58 72 62"/>
+          </g>
+          <circle cx="50" cy="35" r="6.5" fill="url(#bowGrad)" stroke="#fff" stroke-width="2.4"/>
+        </svg>
+      </div>
+
+      <!-- YOUSSEF — right half of heart (right_hert.png) -->
+      <button class="fp" type="button" data-who="youssef"
+              aria-pressed="false" aria-label="بصمة يوسف — اضغط لتفعيلها">
+        <span class="fp__stage">
+          <span class="fp__glow" aria-hidden="true"></span>
+          <span class="fp__half-wrap">
+            <svg class="fp__fallback" viewBox="-30 -30 60 60" aria-hidden="true" focusable="false">
+              <use href="#heartPathFull" clip-path="url(#clipRightHalf)" fill="currentColor"/>
+            </svg>
+            <img src="right_hert.png" alt="" class="fp__half"
+                 loading="eager" decoding="async"
+                 onload="this.dataset.loaded='1'"
+                 onerror="this.style.display='none'">
+          </span>
+          <span class="fp__badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M12 21 C 5 15 1.5 11 1.5 7 C 1.5 3.6 4.4 1.6 7 3 C 9 4.1 11 6.6 12 9 C 13 6.6 15 4.1 17 3 C 19.6 1.6 22.5 3.6 22.5 7 C 22.5 11 19 15 12 21 Z"
+                    fill="#A62C48"/>
+            </svg>
+          </span>
+        </span>
+        <span class="fp__name">يوسف</span>
+      </button>
+
+      <!-- MALAK — left half of heart (left_hert.png) -->
+      <button class="fp" type="button" data-who="malak"
+              aria-pressed="false" aria-label="بصمة ملك — اضغط لتفعيلها">
+        <span class="fp__stage">
+          <span class="fp__glow" aria-hidden="true"></span>
+          <span class="fp__half-wrap">
+            <svg class="fp__fallback" viewBox="-30 -30 60 60" aria-hidden="true" focusable="false">
+              <use href="#heartPathFull" clip-path="url(#clipLeftHalf)" fill="currentColor"/>
+            </svg>
+            <img src="left_hert.png" alt="" class="fp__half"
+                 loading="eager" decoding="async"
+                 onload="this.dataset.loaded='1'"
+                 onerror="this.style.display='none'">
+          </span>
+          <span class="fp__badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M12 21 C 5 15 1.5 11 1.5 7 C 1.5 3.6 4.4 1.6 7 3 C 9 4.1 11 6.6 12 9 C 13 6.6 15 4.1 17 3 C 19.6 1.6 22.5 3.6 22.5 7 C 22.5 11 19 15 12 21 Z"
+                    fill="#A62C48"/>
+            </svg>
+          </span>
+        </span>
+        <span class="fp__name">ملك</span>
+      </button>
+
+    </div>
+
+    <p class="opening__status" id="openStatus" role="status" aria-live="polite">
+      المسوا البصمتين… الحكاية مش هتفتح غير بيهم الاتنين.
+    </p>
+    <p class="opening__hint">مش بصمة حقيقية 🙂 — دي مجرد لعبة صغيرة بينكم.</p>
+
+  </div>
+</section>
+
+<!-- ============ STORY ============ -->
+<main id="story">
+  <h1 class="sr-only">يوسف و ملك — حكايتنا</h1>
+
+  <!-- INTRO HERO -->
+  <section class="intro" aria-labelledby="storyTitle" data-tint="rgba(255,255,255,0)">
+
+    <div class="intro__deco intro__deco--tl" aria-hidden="true" data-intro-step="0">
+      <svg viewBox="0 0 60 60">
+        <path d="M30 50 C 15 39 6 30 6 20 C 6 12 13 8 19 11 C 24 13 28 18 30 24 C 32 18 36 13 41 11 C 47 8 54 12 54 20 C 54 30 45 39 30 50 Z"
+              fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="intro__deco intro__deco--tr" aria-hidden="true" data-intro-step="1">
+      <svg viewBox="0 0 60 60">
+        <path d="M10 40 C 20 22 40 12 52 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M52 20 l -9 -1 M52 20 l -3 9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="intro__deco intro__deco--br" aria-hidden="true" data-intro-step="3">
+      <svg viewBox="0 0 60 60">
+        <path d="M30 50 C 15 39 6 30 6 20 C 6 12 13 8 19 11 C 24 13 28 18 30 24 C 32 18 36 13 41 11 C 47 8 54 12 54 20 C 54 30 45 39 30 50 Z"
+              fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="intro__frame" aria-hidden="true" data-intro-step="1">
+      <svg class="intro__heart-outline" viewBox="-10 -20 420 400" preserveAspectRatio="xMidYMid meet">
+        <path d="M200 350 C 60 260 10 180 10 100 C 10 40 60 10 100 20 C 140 30 180 70 200 110 C 220 70 260 30 300 20 C 340 10 390 40 390 100 C 390 180 340 260 200 350 Z"/>
+      </svg>
+      <div class="intro__names-inner">
+        <span>يوسف</span>
+        <svg viewBox="0 0 40 36" aria-hidden="true" focusable="false">
+          <path d="M20 32 C 8 23 2 16 2 9.5 C 2 4.5 6.5 1.5 10.5 3 C 14 4.3 18 8 20 12 C 22 8 26 4.3 29.5 3 C 33.5 1.5 38 4.5 38 9.5 C 38 16 32 23 20 32 Z"
+                fill="#A62C48" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+        <span class="m">ملك</span>
+      </div>
+    </div>
+
+    <div class="intro__content">
+      <p class="eyebrow" data-intro-step="0">حكايتنا</p>
+      <h2 class="intro__title" id="storyTitle" tabindex="-1" data-intro-step="2">
+        عالم صغير<br>
+        <em>مبني من قلبي</em>
+      </h2>
+      <p class="intro__lead" data-intro-step="3">
+        مش كل اللي بينا ينفع يتحكي في كلام، فقولت أجمعلك هنا شوية حاجات من حكايتنا، حاجات بحبها وبحب إنها تخصنا إحنا.
+      </p>
+      <p class="intro__hint" data-intro-step="4">خد وقتك… وانزل بالراحة ♡</p>
+    </div>
+
+    <div class="scroll-cue" aria-hidden="true" data-intro-step="5">
+      <span></span>
+      انزل
+    </div>
+  </section>
+
+  <!-- SCRAPBOOK -->
+  <section class="scrapbook" id="memories" aria-label="ذكرياتنا" data-tint="rgba(220,206,240,.22)"></section>
+
+  <!-- LOVE LETTER -->
+  <section class="letter-section" id="letter" aria-labelledby="letterTitle" data-tint="rgba(248,221,229,.28)">
+    <p class="eyebrow">من يوسف</p>
+    <h2 class="section-title" id="letterTitle">جواب صغير… فيه كلام كتير</h2>
+
+    <div class="letter-wrap">
+      <article class="letter" id="letterPaper" aria-label="جواب من يوسف لملك">
+        <div class="letter__seal" aria-hidden="true">
+          <svg viewBox="0 0 80 80" focusable="false">
+            <circle cx="40" cy="40" r="36" fill="url(#sealGrad)" stroke="#fff" stroke-width="2.5"/>
+            <circle cx="40" cy="40" r="28" fill="none" stroke="#FFF9F6" stroke-width="1.2" stroke-opacity=".55" stroke-dasharray="2 4"/>
+            <path d="M40 55 C 30 47 24 41 24 34 C 24 29 28 26 31.5 27.5 C 34.5 28.8 38 32 40 35.5 C 42 32 45.5 28.8 48.5 27.5 C 52 26 56 29 56 34 C 56 41 50 47 40 55 Z"
+                  fill="#FFF9F6" fill-opacity=".92"/>
+          </svg>
+        </div>
+        <div class="letter__crease" aria-hidden="true"></div>
+        <div class="letter__body" id="letterBody"></div>
+      </article>
+      <button class="letter__open" id="letterOpen" type="button" aria-expanded="false">
+        افتح الجواب
+      </button>
+    </div>
+  </section>
+
+  <!-- FINALE -->
+  <section class="finale" id="finale" aria-labelledby="finaleTitle" data-tint="rgba(197,228,250,.3)">
+    <p class="eyebrow">و لسه في حكايات</p>
+    <h2 class="finale__title" id="finaleTitle">
+      اللي هنا جزء من اللي عيشناه<br><span>ولسه في حاجات كتير جاية</span>
+    </h2>
+
+    <div class="player is-empty" id="player">
+      <div class="player__art" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M12 21 C 5 15 1.5 11 1.5 7 C 1.5 3.6 4.4 1.6 7 3 C 9 4.1 11 6.6 12 9 C 13 6.6 15 4.1 17 3 C 19.6 1.6 22.5 3.6 22.5 7 C 22.5 11 19 15 12 21 Z"
+                fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="player__meta">
+        <p class="player__title" id="trackTitle">أغنيتنا</p>
+        <p class="player__sub" id="trackSub">يوسف و ملك</p>
+      </div>
+      <div class="player__controls">
+        <svg class="player__heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 21 C 5 15 1.5 11 1.5 7 C 1.5 3.6 4.4 1.6 7 3 C 9 4.1 11 6.6 12 9 C 13 6.6 15 4.1 17 3 C 19.6 1.6 22.5 3.6 22.5 7 C 22.5 11 19 15 12 21 Z"
+                fill="currentColor"/>
+        </svg>
+        <button class="player__play" id="playBtn" type="button" aria-label="تشغيل الأغنية">
+          <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M8 5.5 L18.5 12 L8 18.5 Z" fill="currentColor"/>
+          </svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="7" y="5" width="3.6" height="14" rx="1.4" fill="currentColor"/>
+            <rect x="13.4" y="5" width="3.6" height="14" rx="1.4" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+      <div class="player__bars" id="bars" aria-hidden="true"></div>
+      <input class="player__seek" id="seek" type="range" min="0" max="100" step="0.1" value="0"
+             aria-label="موضع تشغيل الأغنية" disabled>
+      <div class="player__time">
+        <span id="timeCur">0:00</span>
+        <span id="timeDur">0:00</span>
+      </div>
+      <p class="player__note">الأغنية بتبدأ تلقائي بعد تفعيل البصمتين، وتقدر تتحكم فيها من هنا.</p>
+      <audio id="audio" preload="none"></audio>
+    </div>
+
+    <p class="finale__foot">اتعملت بحب <span>♡</span> يوسف و ملك</p>
+  </section>
+</main>
+
+<noscript>
+  <style>
+    .opening{ display:none !important; }
+    #story{ opacity:1 !important; visibility:visible !important; }
+    body{ overflow:auto !important; height:auto !important; }
+    .js .mem.reveal, .js .doodle.reveal{ opacity:1 !important; transform:rotate(var(--rot)) !important; }
+    [data-intro-step]{ opacity:1 !important; }
+    .letter__body > *{ opacity:1 !important; transform:none !important; }
+    .hearts-layer{ display:none; }
+  </style>
+</noscript>
+
+<script>
+(function () {
+  'use strict';
+
+  document.documentElement.classList.add('js');
+
+  /* ==========================================================
+     ============  EDITABLE CONTENT  ==========================
+     ========================================================== */
+
+  const CONFIG = {
+
+    /* -------- FINGERPRINT HALF IMAGES -----------------------
+       اسم ملفات نص القلب — بدّل الأسماء لو مختلفين عندك
+    ---------------------------------------------------------- */
+    halves: {
+      youssef: 'right_hert.png',
+      malak:   'left_hert.png'
+    },
+
+    /* -------- MUSIC -----------------------------------------
+       ضع مسار ملف الأغنية في src (مثال: 'music/our-song.mp3')
+    ---------------------------------------------------------- */
+    audio: {
+      src: 'music.mp3',
+      title: 'أغنيتنا',
+      artist: 'يوسف و ملك'
+    },
+
+    /* -------- LOVE LETTER ----------------------------------- */
+    letter: {
+      to: '',
+      paragraphs: [
+        'يمكن مش دايمًا بعرف أقولك كل اللي جوايا، بس ده مش معناه إن مفيش كلام كتير نفسي تعرفيه.',
+        'أنا بحبك، وبحب إنك جزء من حياتي. وبحب وقتنا سوا، بكل تفاصيله، سواء بنضحك ونهزر أو بنتكلم في أي حاجة، حتى لو كانت حاجة بسيطة.',
+        'وعشان كده حبيت أجمع الصور والذكريات دي في مكان واحد. حاجات نقدر نرجعلها بعد فترة، ونفتكر كنا فين، وكنا بنعمل إيه، وقد إيه الأيام دي كانت جزء من حكايتنا.',
+        'أنا مش عايز الكلام ده يبقى مجرد رسالة تقريها وخلاص، أنا عايزك تعرفي إنك غالية عندي، وإن وجودك في حياتي فارق معايا بجد.'
+      ],
+      closing: 'بحبك يا ملك.',
+      sign: ''
+    },
+
+    /* -------- MEMORIES ------------------------------------- */
+    memories: [
+      { kind:'polaroid', align:'start', tilt:-3.5, doodle:'heart',
+        src:'لحظة_حلوة.jpg', alt:'لحظة حلوة', date:'', caption:'لحظة حلوة' },
+
+      { kind:'note', align:'end', tilt:2,
+        text:'بعض اللحظات مش محتاجة كلام… بتبان في العين.' },
+
+      { kind:'polaroid', align:'end', tilt:2.5, doodle:'arrow',
+        src:'يوم_من_ايامنا.jpg', alt:'يوم من أيامنا', date:'', caption:'يوم من أيامنا' },
+
+      { kind:'wide', align:'center', tilt:0, doodle:'sparkle',
+        src:'و مشهد كامل يستاهل يتفضل لوحده.jpg', alt:'مشهد كامل يستاهل يتفضل لوحده', date:'', caption:'و مشهد كامل يستاهل يتفضل لوحده' },
+
+      { kind:'polaroid', align:'start', tilt:-2, doodle:'heart',
+        src:'ضحكة مش هتتنسي.jpg', alt:'ضحكة مش هتتنسي', date:'', caption:'ضحكة مش هتتنسي' },
+
+      { kind:'duo', align:'center', tilt:0,
+        items:[
+          { src:'إحنا.jpg', alt:'إحنا', caption:'إحنا' },
+          { src:'و بعدين.jpg', alt:'و بعدين', caption:'و بعدين' }
+        ] },
+
+      { kind:'note', align:'center', tilt:-1.5,
+        text:'كل صورة هنا ليها حكاية… وكل حكاية ليها إحنا.' }
+    ]
+  };
+
+  /* ==========================================================
+     ============  END OF EDITABLE CONTENT  ===================
+     ========================================================== */
+
+  const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const D = REDUCED ? 0.1 : 1;
+  const $  = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.prototype.slice.call((r || document).querySelectorAll(s));
+
+  /* ----------------------------------------------------------
+     Ambient floating hearts
+     ---------------------------------------------------------- */
+  function spawnAmbientHearts() {
+    const layer = $('#heartsLayer');
+    if (!layer || REDUCED) return;
+
+    const heartSVG =
+      '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">' +
+      '<path d="M12 21 C 5 15 1.5 11 1.5 7 C 1.5 3.6 4.4 1.6 7 3 C 9 4.1 11 6.6 12 9 ' +
+      'C 13 6.6 15 4.1 17 3 C 19.6 1.6 22.5 3.6 22.5 7 C 22.5 11 19 15 12 21 Z" fill="currentColor"/></svg>';
+
+    const colors = ['#A62C48', '#173F63', '#EAB7CC', '#A5D9FA', '#DCCEF0', '#B83A58'];
+    const N = window.innerWidth < 700 ? 16 : 26;
+
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < N; i++) {
+      const h = document.createElement('div');
+      h.className = 'amb-heart';
+      h.innerHTML = heartSVG;
+
+      h.style.left = (Math.random() * 100) + '%';
+      h.style.animationDelay = (-Math.random() * 30) + 's';
+      h.style.animationDuration = (20 + Math.random() * 18) + 's';
+      h.style.setProperty('--size', (10 + Math.random() * 18).toFixed(1) + 'px');
+      h.style.setProperty('--op', (0.12 + Math.random() * 0.2).toFixed(2));
+      h.style.setProperty('--hue', colors[i % colors.length]);
+      h.style.setProperty('--drift', (Math.random() * 60 - 30).toFixed(0) + 'px');
+
+      frag.appendChild(h);
+    }
+    layer.appendChild(frag);
+  }
+
+  /* ----------------------------------------------------------
+     Placeholder artwork for missing memory images
+     ---------------------------------------------------------- */
+  function placeholder(w, h, seed) {
+    const palettes = [
+      ['#F8DDE5', '#EAB7CC'], ['#C5E4FA', '#A5D9FA'], ['#DCCEF0', '#C4B0E6'],
+      ['#FFE9EF', '#F1C6D7'], ['#D9EDFC', '#B6DBF6'], ['#F2E3F7', '#D6C0EE']
+    ];
+    const p = palettes[seed % palettes.length];
+    const svg =
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '">' +
+        '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+          '<stop offset="0" stop-color="' + p[0] + '"/>' +
+          '<stop offset="1" stop-color="' + p[1] + '"/>' +
+        '</linearGradient></defs>' +
+        '<rect width="' + w + '" height="' + h + '" fill="url(#g)"/>' +
+        '<g fill="none" stroke="#A62C48" stroke-opacity="0.3" stroke-width="' + (w / 120) + '" ' +
+          'stroke-linecap="round" stroke-linejoin="round">' +
+          '<path transform="translate(' + (w / 2) + ' ' + (h / 2 - h * 0.03) + ') scale(' + (w / 140) + ')" ' +
+            'd="M0 20 C -13 9 -26 -2 -26 -12 C -26 -20.5 -18.5 -24.5 -12 -21.5 ' +
+            'C -6 -18.5 -2 -13.5 0 -9 C 2 -13.5 6 -18.5 12 -21.5 C 18.5 -24.5 26 -20.5 ' +
+            '26 -12 C 26 -2 13 9 0 20 Z"/>' +
+        '</g>' +
+        '<text x="' + (w / 2) + '" y="' + (h * 0.82) + '" text-anchor="middle" ' +
+          'font-family="sans-serif" font-size="' + (w / 22) + '" fill="#A62C48" fill-opacity="0.42">' +
+          'مكان صورتكم' +
+        '</text></svg>';
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
+
+  /* ----------------------------------------------------------
+     Doodles
+     ---------------------------------------------------------- */
+  const DOODLES = {
+    heart: '<svg viewBox="0 0 60 60" aria-hidden="true" focusable="false">' +
+      '<path d="M30 47 C 15 36 7 28 11 19 C 14 12 24 12 30 22 C 36 12 46 12 49 19 C 53 28 45 36 30 47 Z"/></svg>',
+    arrow: '<svg viewBox="0 0 60 60" aria-hidden="true" focusable="false">' +
+      '<path d="M46 10 C 32 15 19 25 14 40"/><path d="M14 40 l -1.5 -10 M14 40 l 9.5 -4.5"/></svg>',
+    sparkle: '<svg viewBox="0 0 60 60" aria-hidden="true" focusable="false">' +
+      '<path d="M30 9 L34.5 25.5 L51 30 L34.5 34.5 L30 51 L25.5 34.5 L9 30 L25.5 25.5 Z"/></svg>'
+  };
+
+  /* ----------------------------------------------------------
+     Build scrapbook
+     ---------------------------------------------------------- */
+  function buildMemories() {
+    const host = $('#memories');
+    if (!host) return;
+
+    const frag = document.createDocumentFragment();
+    let seed = 0;
+
+    CONFIG.memories.forEach(function (m, idx) {
+
+      if (m.kind === 'note') {
+        const el = document.createElement('div');
+        el.className = 'mem mem--note reveal align-' + (m.align || 'center');
+        el.style.setProperty('--rot', (m.tilt || 0) + 'deg');
+        const p = document.createElement('p');
+        p.textContent = m.text || '';
+        el.appendChild(p);
+        frag.appendChild(el);
+
+      } else if (m.kind === 'wide') {
+        const fig = document.createElement('figure');
+        fig.className = 'mem mem--wide reveal align-center';
+        fig.style.setProperty('--rot', (m.tilt || 0) + 'deg');
+        fig.appendChild(makeFrame(m, 1200, 750, seed++));
+        frag.appendChild(fig);
+
+      } else if (m.kind === 'duo') {
+        const wrap = document.createElement('div');
+        wrap.className = 'mem mem--duo reveal align-center';
+        wrap.style.setProperty('--rot', (m.tilt || 0) + 'deg');
+        (m.items || []).forEach(function (it) {
+          wrap.appendChild(makeFrame(it, 600, 800, seed++));
+        });
+        frag.appendChild(wrap);
+
+      } else {
+        const fig = document.createElement('figure');
+        fig.className = 'mem mem--polaroid reveal align-' + (m.align || 'center');
+        fig.style.setProperty('--rot', (m.tilt || 0) + 'deg');
+        fig.appendChild(makeFrame(m, 700, 875, seed++));
+
+        if (idx % 3 === 0) {
+          const sticker = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          sticker.setAttribute('class', 'mem__sticker');
+          sticker.setAttribute('viewBox', '0 0 60 60');
+          sticker.setAttribute('aria-hidden', 'true');
+          sticker.innerHTML =
+            '<path d="M30 50 C 15 38 4 28 4 18 C 4 10 11 6 17 8.5 C 22 10.5 27 15 30 21 ' +
+            'C 33 15 38 10.5 43 8.5 C 49 6 56 10 56 18 C 56 28 45 38 30 50 Z" ' +
+            'fill="#A62C48" stroke="#FFF9F6" stroke-width="4" stroke-linejoin="round"/>';
+          fig.appendChild(sticker);
+        }
+        frag.appendChild(fig);
+      }
+
+      if (m.doodle) {
+        const d = document.createElement('div');
+        d.className = 'doodle reveal';
+        d.style.setProperty('--rot', ((idx % 2 ? 1 : -1) * (4 + idx)) + 'deg');
+        d.innerHTML = DOODLES[m.doodle] || DOODLES.heart;
+        frag.appendChild(d);
+      }
+    });
+
+    host.appendChild(frag);
+  }
+
+  function makeFrame(item, w, h, seed) {
+    const frame = document.createElement('div');
+    frame.className = 'mem__frame';
+
+    const img = document.createElement('img');
+    img.className = 'mem__img';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.width = w;
+    img.height = h;
+    img.alt = item.alt || 'ذكرى';
+    img.src = item.src && item.src.trim() ? item.src : placeholder(w, h, seed);
+    frame.appendChild(img);
+
+    const cap = document.createElement('figcaption');
+    cap.className = 'mem__cap';
+    if (item.date) {
+      const d = document.createElement('span');
+      d.className = 'mem__date';
+      d.textContent = item.date;
+      cap.appendChild(d);
+    }
+    if (item.caption) {
+      const t = document.createElement('span');
+      t.className = 'mem__text';
+      t.textContent = item.caption;
+      cap.appendChild(t);
+    }
+    if (cap.childNodes.length) frame.appendChild(cap);
+    return frame;
+  }
+
+  /* ----------------------------------------------------------
+     Build letter (with staggered --i on each child)
+     ---------------------------------------------------------- */
+  function buildLetter() {
+    const body = $('#letterBody');
+    if (!body) return;
+
+    const L = CONFIG.letter;
+    let i = 0;
+
+    if (L.to) {
+      const to = document.createElement('p');
+      to.className = 'letter__to';
+      to.style.setProperty('--i', i++);
+      to.textContent = L.to;
+      body.appendChild(to);
+    }
+
+    (L.paragraphs || []).forEach(function (txt) {
+      const p = document.createElement('p');
+      p.style.setProperty('--i', i++);
+      p.textContent = txt;
+      body.appendChild(p);
+    });
+
+    if (L.closing) {
+      const p = document.createElement('p');
+      p.style.setProperty('--i', i++);
+      const strong = document.createElement('strong');
+      strong.textContent = L.closing;
+      p.appendChild(strong);
+      body.appendChild(p);
+    }
+
+    if (L.sign) {
+      const s = document.createElement('p');
+      s.className = 'letter__sign';
+      s.style.setProperty('--i', i++);
+      s.innerHTML = '<span></span>';
+      s.firstChild.textContent = L.sign + ' ';
+      s.insertAdjacentHTML('beforeend',
+        '<svg class="letter__heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+        '<path d="M12 21 C 5 15 1.5 11 1.5 7 C 1.5 3.6 4.4 1.6 7 3 C 9 4.1 11 6.6 12 9 ' +
+        'C 13 6.6 15 4.1 17 3 C 19.6 1.6 22.5 3.6 22.5 7 C 22.5 11 19 15 12 21 Z" fill="currentColor"/></svg>');
+      body.appendChild(s);
+    }
+  }
+
+  /* ----------------------------------------------------------
+     Letter unfold
+     ---------------------------------------------------------- */
+  function initLetter() {
+    const paper = $('#letterPaper');
+    const btn = $('#letterOpen');
+    if (!paper || !btn) return;
+
+    let opened = false;
+    function open() {
+      if (opened) return;
+      opened = true;
+      paper.classList.add('is-open');
+      btn.classList.add('is-hidden');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+
+    btn.addEventListener('click', open);
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { open(); io.disconnect(); }
+        });
+      }, { threshold: 0.3 });
+      io.observe(paper);
+    } else {
+      open();
+    }
+  }
+
+  /* ----------------------------------------------------------
+     Music player
+     ---------------------------------------------------------- */
+  function initPlayer() {
+    const player = $('#player');
+    const audio  = $('#audio');
+    const playBtn = $('#playBtn');
+    const seek    = $('#seek');
+    const bars    = $('#bars');
+    const tCur    = $('#timeCur');
+    const tDur    = $('#timeDur');
+    if (!player || !audio || !playBtn) return function () {};
+
+    if (bars) {
+      const n = 44;
+      let html = '';
+      for (let i = 0; i < n; i++) {
+        const h = 20 + Math.abs(Math.sin(i * 1.73 + 0.6)) * 68;
+        html += '<span style="--h:' + h.toFixed(1) + '%;--i:' + i + '"></span>';
+      }
+      bars.innerHTML = html;
+    }
+
+    const hasSrc = !!(CONFIG.audio && CONFIG.audio.src && CONFIG.audio.src.trim());
+    const titleEl = $('#trackTitle');
+    const subEl   = $('#trackSub');
+    if (titleEl && CONFIG.audio.title)  titleEl.textContent = CONFIG.audio.title;
+    if (subEl && CONFIG.audio.artist)   subEl.textContent   = CONFIG.audio.artist;
+
+    function fmt(t) {
+      if (!isFinite(t) || t < 0) t = 0;
+      const m = Math.floor(t / 60);
+      const s = Math.floor(t % 60);
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    if (!hasSrc) {
+      player.classList.add('is-empty');
+      playBtn.disabled = true;
+      seek.disabled = true;
+      playBtn.setAttribute('aria-label', 'الأغنية لسه مش متاحة');
+      return function () {};
+    }
+
+    player.classList.remove('is-empty');
+    audio.preload = 'metadata';
+    audio.src = CONFIG.audio.src;
+    playBtn.disabled = false;
+    seek.disabled = false;
+
+    function setPlaying(on) {
+      player.classList.toggle('is-playing', on);
+      playBtn.setAttribute('aria-label', on ? 'إيقاف الأغنية' : 'تشغيل الأغنية');
+    }
+
+    function playAudio() {
+      const p = audio.play();
+      if (p && p.catch) p.catch(function () {
+        setPlaying(false);
+        playBtn.setAttribute('aria-label', 'مش قادر يشغّل الملف');
+        const note = $('.player__note', player);
+        if (note) note.textContent = 'التشغيل التلقائي مش متاح — اضغط زر التشغيل لبدء الأغنية.';
+      });
+    }
+
+    playBtn.addEventListener('click', function () {
+      if (audio.paused) {
+        playAudio();
+      } else {
+        audio.pause();
+      }
+    });
+
+    audio.addEventListener('play',  function () { setPlaying(true); });
+    audio.addEventListener('pause', function () { setPlaying(false); });
+    audio.addEventListener('ended', function () {
+      setPlaying(false);
+      seek.value = 0;
+      seek.style.setProperty('--p', '0%');
+      tCur.textContent = fmt(0);
+    });
+    audio.addEventListener('loadedmetadata', function () {
+      tDur.textContent = fmt(audio.duration);
+      seek.max = audio.duration || 0;
+    });
+    audio.addEventListener('timeupdate', function () {
+      if (!audio.duration) return;
+      seek.value = audio.currentTime;
+      const pct = (audio.currentTime / audio.duration) * 100;
+      seek.style.setProperty('--p', pct + '%');
+      tCur.textContent = fmt(audio.currentTime);
+    });
+    audio.addEventListener('error', function () {
+      setPlaying(false);
+      player.classList.add('is-empty');
+      playBtn.disabled = true;
+      seek.disabled = true;
+      const note = $('.player__note', player);
+      if (note) note.textContent = 'مش قادرين نحمّل ملف الأغنية — اتأكد من المسار.';
+    });
+
+    seek.addEventListener('input', function () {
+      if (!audio.duration) return;
+      const pct = (seek.value / audio.duration) * 100;
+      seek.style.setProperty('--p', pct + '%');
+      tCur.textContent = fmt(seek.value);
+    });
+    seek.addEventListener('change', function () {
+      if (!audio.duration) return;
+      audio.currentTime = Number(seek.value);
+    });
+
+    return playAudio;
+  }
+
+  /* ----------------------------------------------------------
+     Scroll reveals
+     ---------------------------------------------------------- */
+  function initReveals() {
+    const items = $$('.reveal');
+    if (!items.length) return;
+    if (REDUCED || !('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    items.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ----------------------------------------------------------
+     Background tint shifts
+     ---------------------------------------------------------- */
+  function initTints() {
+    const sections = $$('[data-tint]');
+    if (!sections.length || !('IntersectionObserver' in window)) return;
+    const root = document.documentElement;
+    let current = '';
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        const tint = e.target.getAttribute('data-tint');
+        if (tint && tint !== current) {
+          current = tint;
+          root.style.setProperty('--tint', tint);
+        }
+      });
+    }, { threshold: 0.35 });
+    sections.forEach(function (s) { io.observe(s); });
+  }
+
+  /* ----------------------------------------------------------
+     OPENING — two half hearts join, burst, and open the world
+     ---------------------------------------------------------- */
+  function initOpening(startMusic) {
+    const opening = $('#opening');
+    const buttons = $$('.fp');
+    const status  = $('#openStatus');
+    const body    = document.body;
+    const row     = $('#fpRow');
+    if (!opening || !buttons.length || !row) return;
+
+    const pressed = { youssef: false, malak: false };
+    let finished = false;
+    const NAME = { youssef: 'يوسف', malak: 'ملك' };
+
+    function say(text, good) {
+      if (!status) return;
+      status.textContent = text;
+      status.classList.toggle('is-good', !!good);
+    }
+
+    function burstHearts() {
+      if (REDUCED) return;
+      const heartSVG =
+        '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">' +
+        '<path d="M12 21 C 5 15 1.5 11 1.5 7 C 1.5 3.6 4.4 1.6 7 3 C 9 4.1 11 6.6 12 9 ' +
+        'C 13 6.6 15 4.1 17 3 C 19.6 1.6 22.5 3.6 22.5 7 C 22.5 11 19 15 12 21 Z" fill="currentColor"/></svg>';
+      const colors = ['#A62C48', '#173F63', '#EAB7CC', '#A5D9FA', '#DCCEF0', '#B83A58'];
+      const count = 24;
+      const rowRect = row.getBoundingClientRect();
+      const cx = rowRect.width / 2;
+      const cy = rowRect.height / 2;
+
+      for (let i = 0; i < count; i++) {
+        const h = document.createElement('div');
+        h.className = 'burst-heart';
+        h.innerHTML = heartSVG;
+
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+        const dist = 110 + Math.random() * 140;
+        const tx = Math.cos(angle) * dist;
+        const ty = Math.sin(angle) * dist;
+
+        h.style.left = cx + 'px';
+        h.style.top = cy + 'px';
+        h.style.setProperty('--tx', tx.toFixed(1) + 'px');
+        h.style.setProperty('--ty', ty.toFixed(1) + 'px');
+        h.style.setProperty('--delay', (Math.random() * 0.2).toFixed(2) + 's');
+        h.style.setProperty('--size', (10 + Math.random() * 16).toFixed(1) + 'px');
+        h.style.setProperty('--color', colors[i % colors.length]);
+
+        row.appendChild(h);
+        window.setTimeout(function () { h.remove(); }, 1800);
+      }
+    }
+
+    function joinHalves() {
+      const yWrap = $('.fp[data-who="youssef"] .fp__half-wrap');
+      const mWrap = $('.fp[data-who="malak"] .fp__half-wrap');
+      if (!yWrap || !mWrap) return;
+
+      const yRect = yWrap.getBoundingClientRect();
+      const mRect = mWrap.getBoundingClientRect();
+
+      // Which is visually left / right
+      let leftWrap, rightWrap, leftRect, rightRect;
+      if (mRect.left < yRect.left) {
+        leftWrap = mWrap;  rightWrap = yWrap;
+        leftRect = mRect;  rightRect = yRect;
+      } else {
+        leftWrap = yWrap;  rightWrap = mWrap;
+        leftRect = yRect;  rightRect = mRect;
+      }
+
+      const gap = Math.max(0, rightRect.left - leftRect.right);
+      const shift = gap / 2;
+
+      leftWrap.style.transition  = 'transform ' + (1.15 * D) + 's cubic-bezier(.45,1.05,.35,1)';
+      rightWrap.style.transition = 'transform ' + (1.15 * D) + 's cubic-bezier(.45,1.05,.35,1)';
+      leftWrap.style.transform   = 'translateX(' + shift + 'px)';
+      rightWrap.style.transform  = 'translateX(' + (-shift) + 'px)';
+
+      // celebratory pop when they touch
+      window.setTimeout(function () {
+        const popIn  = 'transform .45s cubic-bezier(.2,1.4,.4,1)';
+        const scale  = REDUCED ? '1' : '1.09';
+        leftWrap.style.transition  = popIn;
+        rightWrap.style.transition = popIn;
+        leftWrap.style.transform   = 'translateX(' + shift + 'px) scale(' + scale + ')';
+        rightWrap.style.transform  = 'translateX(' + (-shift) + 'px) scale(' + scale + ')';
+
+        // hearts burst from the joined heart
+        burstHearts();
+      }, 1150 * D);
+    }
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const who = btn.getAttribute('data-who');
+        if (!who || pressed[who] || finished) return;
+
+        pressed[who] = true;
+        btn.classList.add('is-on');
+        btn.setAttribute('aria-pressed', 'true');
+        btn.setAttribute('aria-label', 'بصمة ' + NAME[who] + ' — اتفعّلت');
+
+        const other = who === 'youssef' ? 'malak' : 'youssef';
+
+        if (!pressed[other]) {
+          say('بصمة ' + NAME[who] + ' اتفعّلت ♡ — فاضلة بصمة ' + NAME[other] + '.', false);
+          return;
+        }
+
+        // both in — start the ceremony
+        finished = true;
+        say('البصمتين اتقفلوا على بعض… الحكاية بتفتح ♡', true);
+        opening.classList.add('is-connected');
+        if (startMusic) startMusic();
+
+        // 1. halves slide toward each other
+        window.setTimeout(joinHalves, 250 * D);
+
+        // 2. ribbon unwraps
+        window.setTimeout(function () {
+          opening.classList.add('is-untying');
+        }, 900 * D);
+
+        // 3. opening fades away
+        window.setTimeout(function () {
+          opening.classList.add('is-gone');
+          body.classList.remove('is-locked');
+          body.classList.add('unlocked');
+          const t = $('#storyTitle');
+          if (t) { try { t.focus({ preventScroll: true }); } catch (e) {} }
+        }, 2200 * D);
+      });
+    });
+  }
+
+  /* ----------------------------------------------------------
+     BOOT
+     ---------------------------------------------------------- */
+  function boot() {
+    spawnAmbientHearts();
+    buildMemories();
+    buildLetter();
+    const startMusic = initPlayer();
+    initOpening(startMusic);
+    initLetter();
+    initReveals();
+    initTints();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+})();
+</script>
+</body>
+</html>
