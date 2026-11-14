@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>لوحة الزيارات</title>
+<style>
+:root{--bg:#fbf6f8;--card:#fff;--ink:#3b2432;--soft:#6e4f5f;--line:#eadde3;--rose:#a62c48;--navy:#173f63;--sky:#a5d9fa}
+@media (prefers-color-scheme:dark){:root{--bg:#1c1620;--card:#271f2d;--ink:#f3e8ee;--soft:#b9a3b1;--line:#3b2f43;--rose:#f08aa3;--navy:#8cc7ee;--sky:#2f5f82}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+h1{font-size:1.3rem;margin:0}h2{font-size:1rem;margin:0 0 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+.top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.tools{display:flex;flex-wrap:wrap;gap:6px}
+button,select,input{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 12px}
+button{cursor:pointer}button.p{background:var(--rose);color:#fff;border-color:var(--rose)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.kpis{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.kpi b{display:block;font-size:1.6rem;color:var(--rose);line-height:1.2}.kpi span{color:var(--soft);font-size:.85rem}
+.cols{display:flex;align-items:flex-end;gap:3px;height:150px;direction:ltr;padding-top:6px}
+.col{flex:1;background:var(--navy);border-radius:4px 4px 0 0;min-height:2px;position:relative}
+.col:hover{background:var(--rose)}
+.lbls{display:flex;gap:3px;direction:ltr;font-size:.65rem;color:var(--soft)}.lbls i{flex:1;text-align:center;font-style:normal;overflow:hidden}
+.row{display:grid;grid-template-columns:130px 1fr 70px;gap:8px;align-items:center;margin:5px 0;font-size:.9rem}
+.bar{height:10px;border-radius:6px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;background:var(--rose)}
+.row em{font-style:normal;color:var(--soft);text-align:left;direction:ltr}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.85rem;white-space:nowrap}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:right}th{color:var(--soft);font-weight:600}
+tr.s{cursor:pointer}tr.s:hover{background:var(--bg)}
+.tl{white-space:normal;background:var(--bg);color:var(--soft);font-size:.8rem}
+code{font-size:.75rem;color:var(--soft)}
+#login{max-width:340px;margin:18vh auto}#login input{width:100%;margin:8px 0}
+.err{color:var(--rose);min-height:1.5em}.muted{color:var(--soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div id="login" class="card">
+  <h1>لوحة الزيارات 🔒</h1>
+  <form id="lf"><input id="pw" type="password" placeholder="كلمة المرور" autocomplete="current-password" required>
+  <button class="p" style="width:100%">دخول</button></form>
+  <div class="err" id="err"></div>
+</div>
+
+<div id="app" hidden>
+  <div class="top">
+    <h1>لوحة الزيارات</h1>
+    <div class="tools">
+      <select id="range"><option value="1">آخر 24 ساعة</option><option value="7">آخر 7 أيام</option><option value="30" selected>آخر 30 يوم</option><option value="90">آخر 90 يوم</option><option value="365">آخر سنة</option></select>
+      <button id="refresh">تحديث</button>
+      <button id="csv">تصدير CSV</button>
+      <button id="ign" title="عشان زياراتك إنت متتحسبش">تجاهل زياراتي</button>
+      <button id="out">خروج</button>
+    </div>
+  </div>
+  <div class="kpis" id="kpis"></div>
+  <div class="grid">
+    <div class="card"><h2>الزيارات يوم بيوم</h2><div id="dayChart"></div></div>
+    <div class="card"><h2>الزيارات حسب ساعة اليوم (توقيت القاهرة)</h2><div id="hourChart"></div></div>
+    <div class="card"><h2>رحلة الزائر (كام واحد وصل لكل خطوة)</h2><div id="funnel"></div></div>
+    <div class="card"><h2>الجهاز</h2><div id="devices"></div><h2 style="margin-top:14px">المتصفح</h2><div id="browsers"></div></div>
+    <div class="card"><h2>نظام التشغيل</h2><div id="oses"></div><h2 style="margin-top:14px">جاي منين</h2><div id="refs"></div></div>
+    <div class="card"><h2>ملخص الأحداث</h2><div class="tw"><table id="evSum"></table></div></div>
+  </div>
+  <div class="card"><h2>كل زيارة بالتفصيل <span class="muted">(دوس على الصف تشوف الخطوات)</span></h2><div class="tw"><table id="sessions"></table></div></div>
+  <div class="card"><h2>سجل كل الأحداث</h2>
+    <div class="tools" style="margin-bottom:8px"><select id="evFilter"></select></div>
+    <div class="tw"><table id="log"></table></div>
+    <button id="more" style="margin-top:8px">عرض المزيد</button>
+  </div>
+</div>
+</div>
+
+<script>
+var SB_URL = 'https://cerglgpzwrnmbmorvoci.supabase.co';   // نفس القيم اللي في index.html
+var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlcmdsZ3B6d3JubWJtb3J2b2NpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2OTMwNjAsImV4cCI6MjExMDI2OTA2MH0.tUOupEQ-bVVhyVAU3UDqX2uGkuCcj-bj3X4NpH65I08';
+
+var $ = function (id) { return document.getElementById(id); };
+var rows = [], sessions = [], logLimit = 100;
+var TZ = 'Africa/Cairo';
+var EV = { site_open:'فتح الموقع', fingerprint_press:'ضغط بصمة', opening_completed:'فتح الحكاية', section_view:'شاف قسم', memory_view:'شاف ذكرى',
+  letter_open:'فتح الجواب', play_button_click:'ضغط تشغيل', song_play:'شغّل الأغنية', song_pause:'وقّف الأغنية', song_progress:'تقدم الأغنية',
+  link_click:'ضغط لينك', scroll_depth:'Scroll', session_summary:'ملخص الزيارة' };
+var SEC = { intro:'المقدمة', memories:'الذكريات', letter:'الجواب', finale:'الأغنية', 'levo-cta':'هدية Levo' };
+
+function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) { return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]; }); }
+function fmtDT(d) { return new Date(d).toLocaleString('ar-EG-u-nu-latn', { timeZone: TZ, day:'numeric', month:'short', hour:'numeric', minute:'2-digit' }); }
+function fmtT(d) { return new Date(d).toLocaleTimeString('ar-EG-u-nu-latn', { timeZone: TZ, hour:'numeric', minute:'2-digit', second:'2-digit' }); }
+function dayKey(d) { return new Date(d).toLocaleDateString('en-CA', { timeZone: TZ }); }
+function hourOf(d) { return +new Date(d).toLocaleString('en-GB', { timeZone: TZ, hour:'2-digit', hourCycle:'h23' }); }
+function dur(s) { s = Math.round(s || 0); return s < 60 ? s + ' ث' : Math.floor(s / 60) + ' د ' + (s % 60) + ' ث'; }
+function pct(a, b) { return b ? Math.round(a / b * 100) + '%' : '0%'; }
+function label(e) {
+  var p = e.params || {};
+  if (e.event === 'section_view') return (EV[e.event]) + ': ' + (SEC[p.section] || p.section);
+  if (e.event === 'memory_view') return 'شاف ذكرى رقم ' + p.memory_index;
+  if (e.event === 'fingerprint_press') return 'ضغط بصمة ' + (p.who === 'youssef' ? 'يوسف' : 'ملك');
+  if (e.event === 'song_progress') return 'الأغنية وصلت ' + p.percent + '%';
+  if (e.event === 'scroll_depth') return 'نزل ' + p.percent + '% من الصفحة';
+  if (e.event === 'song_pause') return 'وقّف الأغنية عند ثانية ' + p.at_second;
+  if (e.event === 'link_click') return 'ضغط لينك: ' + p.link_type;
+  if (e.event === 'session_summary') return 'ملخص: بقى ' + dur(p.active_seconds);
+  return EV[e.event] || e.event;
+}
+
+/* ---------- login / fetch ---------- */
+function load(pass, days) {
+  return fetch(SB_URL + '/rest/v1/rpc/get_dashboard_data', {
+    method: 'POST', headers: { 'Content-Type':'application/json', apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY },
+    body: JSON.stringify({ p_password: pass, p_days: days })
+  }).then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.message || 'error'); return j; }); });
+}
+function enter(pass) {
+  $('err').textContent = '';
+  return load(pass, +$('range').value).then(function (data) {
+    sessionStorage.setItem('ru_dash', pass);
+    $('login').hidden = true; $('app').hidden = false;
+    rows = data; render();
+  }).catch(function (e) {
+    sessionStorage.removeItem('ru_dash');
+    $('login').hidden = false; $('app').hidden = true;
+    $('err').textContent = /wrong password/.test(e.message) ? 'كلمة المرور غلط' : 'مشكلة في الاتصال بالداتابيز، راجع الإعدادات';
+  });
+}
+$('lf').onsubmit = function (e) { e.preventDefault(); enter($('pw').value); };
+$('refresh').onclick = $('range').onchange = function () { enter(sessionStorage.getItem('ru_dash') || ''); };
+$('out').onclick = function () { sessionStorage.removeItem('ru_dash'); location.reload(); };
+$('ign').onclick = function () {
+  var on = localStorage.getItem('ru_ignore') === '1';
+  localStorage.setItem('ru_ignore', on ? '0' : '1'); syncIgn();
+};
+function syncIgn() { $('ign').textContent = localStorage.getItem('ru_ignore') === '1' ? '✓ زياراتي متجاهلة (دوس للإلغاء)' : 'تجاهل زياراتي'; }
+syncIgn();
+if (sessionStorage.getItem('ru_dash')) enter(sessionStorage.getItem('ru_dash'));
+
+/* ---------- build sessions ---------- */
+function build() {
+  var map = {}, vnum = {}, nv = 0;
+  rows.slice().sort(function (a, b) { return new Date(a.created_at) - new Date(b.created_at); }).forEach(function (r) {
+    var s = map[r.session_id];
+    if (!s) {
+      if (!vnum[r.visitor_id]) vnum[r.visitor_id] = ++nv;
+      s = map[r.session_id] = { id:r.session_id, visitor:r.visitor_id, vn:vnum[r.visitor_id], start:r.created_at, end:r.created_at, ev:[], set:{}, sum:null,
+        device:r.device, browser:r.browser, os:r.os, screen:r.screen, ref:r.referrer, visitNo:1 };
+    }
+    s.end = r.created_at; s.ev.push(r); s.set[r.event] = 1;
+    if (r.event === 'site_open') s.visitNo = (r.params || {}).visit_number || 1;
+    if (r.event === 'session_summary') s.sum = r.params;
+    if (r.event === 'section_view' && (r.params || {}).section === 'finale') s.set.finale = 1;
+  });
+  sessions = Object.keys(map).map(function (k) { return map[k]; }).sort(function (a, b) { return new Date(b.start) - new Date(a.start); });
+  sessions.forEach(function (s) { s.dur = s.sum ? s.sum.active_seconds : (new Date(s.end) - new Date(s.start)) / 1000; });
+}
+
+/* ---------- widgets ---------- */
+function barList(el, map, total) {
+  var items = Object.keys(map).map(function (k) { return [k, map[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
+  $(el).innerHTML = items.length ? items.map(function (i) {
+    return '<div class="row"><span>' + esc(i[0]) + '</span><div class="bar"><i style="width:' + (total ? i[1] / total * 100 : 0) + '%"></i></div><em>' + i[1] + ' (' + pct(i[1], total) + ')</em></div>';
+  }).join('') : '<span class="muted">مفيش بيانات</span>';
+}
+function colChart(el, keys, counts, short) {
+  var mx = Math.max.apply(null, keys.map(function (k) { return counts[k] || 0; }).concat([1]));
+  $(el).innerHTML = '<div class="cols">' + keys.map(function (k) {
+    return '<div class="col" title="' + esc(k) + ': ' + (counts[k] || 0) + '" style="height:' + ((counts[k] || 0) / mx * 100) + '%"></div>';
+  }).join('') + '</div><div class="lbls">' + keys.map(function (k, i) { return '<i>' + (short(k, i)) + '</i>'; }).join('') + '</div>';
+}
+function tally(fn) { var m = {}; sessions.forEach(function (s) { var k = fn(s); m[k] = (m[k] || 0) + 1; }); return m; }
+
+function render() {
+  build();
+  var n = sessions.length, vis = {}; sessions.forEach(function (s) { vis[s.visitor] = 1; });
+  var nvis = Object.keys(vis).length;
+  var ret = {}; sessions.forEach(function (s) { if (s.visitNo > 1) ret[s.visitor] = 1; });
+  var f = function (k) { return sessions.filter(function (s) { return s.set[k]; }).length; };
+  var avg = n ? sessions.reduce(function (a, s) { return a + s.dur; }, 0) / n : 0;
+  var k = [['زوار مختلفين', nvis], ['عدد الزيارات', n], ['زوار راجعين', Object.keys(ret).length], ['متوسط مدة البقاء', dur(avg)],
+    ['فتحوا الحكاية', pct(f('opening_completed'), n)], ['شغّلوا الأغنية', pct(f('song_play'), n)], ['فتحوا الجواب', pct(f('letter_open'), n)]];
+  $('kpis').innerHTML = k.map(function (x) { return '<div class="kpi"><b>' + x[1] + '</b><span>' + x[0] + '</span></div>'; }).join('');
+
+  var days = +$('range').value, dk = [], dc = tally(function (s) { return dayKey(s.start); });
+  for (var i = Math.min(days, 90) - 1; i >= 0; i--) dk.push(dayKey(Date.now() - i * 864e5));
+  colChart('dayChart', dk, dc, function (d, i) { return dk.length <= 14 || i % 5 === 0 ? d.slice(5) : ''; });
+  var hc = tally(function (s) { return hourOf(s.start); }), hk = []; for (var h = 0; h < 24; h++) hk.push(h);
+  colChart('hourChart', hk, hc, function (h) { return h % 3 === 0 ? h : ''; });
+
+  var steps = [['فتح الموقع', n], ['ضغط على بصمة', f('fingerprint_press')], ['فتح الحكاية', f('opening_completed')], ['وصل للذكريات', sessions.filter(function (s) { return s.ev.some(function (e) { return e.event === 'section_view' && (e.params || {}).section === 'memories'; }); }).length],
+    ['فتح الجواب', f('letter_open')], ['شغّل الأغنية', f('song_play')], ['وصل لآخر الصفحة', f('finale')]];
+  $('funnel').innerHTML = steps.map(function (x) { return '<div class="row"><span>' + x[0] + '</span><div class="bar"><i style="width:' + (n ? x[1] / n * 100 : 0) + '%"></i></div><em>' + x[1] + ' (' + pct(x[1], n) + ')</em></div>'; }).join('');
+
+  barList('devices', tally(function (s) { return s.device || '؟'; }), n);
+  barList('browsers', tally(function (s) { return s.browser || '؟'; }), n);
+  barList('oses', tally(function (s) { return s.os || '؟'; }), n);
+  barList('refs', tally(function (s) { return !s.ref || s.ref === 'direct' ? 'مباشر (لينك مبعوت)' : s.ref; }), n);
+
+  var es = {}; rows.forEach(function (r) { var e = es[r.event] = es[r.event] || { c:0, v:{} }; e.c++; e.v[r.visitor_id] = 1; });
+  $('evSum').innerHTML = '<tr><th>الحدث</th><th>العدد</th><th>زوار</th></tr>' + Object.keys(es).sort(function (a, b) { return es[b].c - es[a].c; }).map(function (x) {
+    return '<tr><td>' + esc(EV[x] || x) + ' <code>' + esc(x) + '</code></td><td>' + es[x].c + '</td><td>' + Object.keys(es[x].v).length + '</td></tr>'; }).join('');
+
+  $('sessions').innerHTML = '<tr><th>بدأت</th><th>الزائر</th><th>الزيارة</th><th>الجهاز</th><th>المدة</th><th>فتح الحكاية</th><th>الأغنية</th><th>الجواب</th><th>أقصى Scroll</th><th>جاي من</th></tr>' +
+    sessions.map(function (s, i) {
+      var y = function (b) { return b ? '✅' : '—'; };
+      return '<tr class="s" data-i="' + i + '"><td>' + fmtDT(s.start) + '</td><td>زائر ' + s.vn + '</td><td>#' + esc(s.visitNo) + '</td><td>' + esc((s.device || '') + ' · ' + (s.os || '') + ' · ' + (s.browser || '')) + '</td><td>' + dur(s.dur) + '</td><td>' +
+        y(s.set.opening_completed) + '</td><td>' + y(s.set.song_play) + '</td><td>' + y(s.set.letter_open) + '</td><td>' + (s.sum ? s.sum.max_scroll_percent + '%' : '—') + '</td><td>' + esc(!s.ref || s.ref === 'direct' ? 'مباشر' : s.ref) + '</td></tr>';
+    }).join('');
+  Array.prototype.forEach.call(document.querySelectorAll('#sessions tr.s'), function (tr) {
+    tr.onclick = function () {
+      var nx = tr.nextElementSibling;
+      if (nx && nx.className === 'tl') { nx.remove(); return; }
+      var s = sessions[+tr.dataset.i], t0 = new Date(s.start);
+      var d = document.createElement('tr'); d.className = 'tl';
+      d.innerHTML = '<td colspan="10">' + s.ev.map(function (e) { return '+' + Math.round((new Date(e.created_at) - t0) / 1000) + 'ث — ' + esc(label(e)); }).join('<br>') + '</td>';
+      tr.after(d);
+    };
+  });
+
+  var names = {}; rows.forEach(function (r) { names[r.event] = 1; });
+  $('evFilter').innerHTML = '<option value="">كل الأحداث</option>' + Object.keys(names).map(function (x) { return '<option value="' + esc(x) + '">' + esc(EV[x] || x) + '</option>'; }).join('');
+  logLimit = 100; renderLog();
+}
+function renderLog() {
+  var f = $('evFilter').value, list = rows.filter(function (r) { return !f || r.event === f; });
+  $('log').innerHTML = '<tr><th>الوقت</th><th>الحدث</th><th>التفاصيل</th><th>الجهاز</th><th>الجلسة</th></tr>' + list.slice(0, logLimit).map(function (r) {
+    return '<tr><td>' + fmtT(r.created_at) + ' <code>' + dayKey(r.created_at) + '</code></td><td>' + esc(label(r)) + '</td><td><code>' + esc(JSON.stringify(r.params)) + '</code></td><td>' + esc(r.device) + '</td><td><code>' + esc(String(r.session_id).slice(0, 6)) + '</code></td></tr>'; }).join('');
+  $('more').hidden = list.length <= logLimit;
+}
+$('evFilter').onchange = function () { logLimit = 100; renderLog(); };
+$('more').onclick = function () { logLimit += 200; renderLog(); };
+
+$('csv').onclick = function () {
+  var cols = ['created_at','visitor_id','session_id','event','params','device','browser','os','screen','language','timezone','referrer'];
+  var q = function (v) { v = typeof v === 'object' ? JSON.stringify(v) : (v == null ? '' : v); return '"' + String(v).replace(/"/g, '""') + '"'; };
+  var txt = '\ufeff' + cols.join(',') + '\n' + rows.map(function (r) { return cols.map(function (c) { return q(r[c]); }).join(','); }).join('\n');
+  var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], { type:'text/csv;charset=utf-8' })); a.download = 'visits.csv'; a.click();
+};
+</script>
+</body>
+</html>
