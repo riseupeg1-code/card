@@ -59,6 +59,7 @@ code{font-size:.75rem;color:var(--soft)}
     </div>
   </div>
   <div class="kpis" id="kpis"></div>
+  <div class="card"><h2>الضغطات على أزرار Levo</h2><div class="kpis" id="cta" style="margin:0"></div></div>
   <div class="grid">
     <div class="card"><h2>الزيارات يوم بيوم</h2><div id="dayChart"></div></div>
     <div class="card"><h2>الزيارات حسب ساعة اليوم (توقيت القاهرة)</h2><div id="hourChart"></div></div>
@@ -77,8 +78,8 @@ code{font-size:.75rem;color:var(--soft)}
 </div>
 
 <script>
-var SB_URL = 'https://cerglgpzwrnmbmorvoci.supabase.co';   // نفس القيم اللي في index.html
-var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlcmdsZ3B6d3JubWJtb3J2b2NpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2OTMwNjAsImV4cCI6MjExMDI2OTA2MH0.tUOupEQ-bVVhyVAU3UDqX2uGkuCcj-bj3X4NpH65I08';
+var SB_URL = 'https://YOUR-PROJECT.supabase.co';   // نفس القيم اللي في index.html
+var SB_KEY = 'YOUR_ANON_PUBLIC_KEY';
 
 var $ = function (id) { return document.getElementById(id); };
 var rows = [], sessions = [], logLimit = 100;
@@ -182,6 +183,14 @@ function render() {
   var k = [['زوار مختلفين', nvis], ['عدد الزيارات', n], ['زوار راجعين', Object.keys(ret).length], ['متوسط مدة البقاء', dur(avg)],
     ['فتحوا الحكاية', pct(f('opening_completed'), n)], ['شغّلوا الأغنية', pct(f('song_play'), n)], ['فتحوا الجواب', pct(f('letter_open'), n)]];
   $('kpis').innerHTML = k.map(function (x) { return '<div class="kpi"><b>' + x[1] + '</b><span>' + x[0] + '</span></div>'; }).join('');
+
+  var lk = rows.filter(function (r) { return r.event === 'link_click'; });
+  var cta = function (type, title) {
+    var c = lk.filter(function (r) { return (r.params || {}).link_type === type; }), v = {};
+    c.forEach(function (r) { v[r.visitor_id] = 1; });
+    return '<div class="kpi"><b>' + Object.keys(v).length + '</b><span>' + title + ' — زوار ضغطوا</span><br><span>إجمالي الضغطات: ' + c.length + ' · من ' + pct(Object.keys(v).length, nvis) + ' من الزوار</span></div>';
+  };
+  $('cta').innerHTML = cta('levo_site', 'زر موقع Levo') + cta('whatsapp', 'زر الواتساب');
 
   var days = +$('range').value, dk = [], dc = tally(function (s) { return dayKey(s.start); });
   for (var i = Math.min(days, 90) - 1; i >= 0; i--) dk.push(dayKey(Date.now() - i * 864e5));
